@@ -10,7 +10,7 @@
         :root {
             --primary-color: #4f46e5; /* インディゴ */
             --secondary-color: #6366f1;
-            --bg-color: #f3ff6; /* 薄いグレーの背景 */
+            --bg-color: #f3f4f6; /* 薄いグレーの背景 */
             --card-bg-color: #ffffff;
             --text-color: #1f2937;
             --border-radius: 0.5rem;
@@ -98,6 +98,8 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            /* リストが長くなった場合にスクロール可能にする */
+            overflow-y: auto; 
         }
 
     /* 6. 連続正解数（Streak）表示スタイル */
@@ -117,9 +119,12 @@
     /* リスト項目（li）の調整 */
     #view ul {
         width: 100%;
+        /* リストのパディングをリセット */
+        padding-left: 0; 
+        list-style: none; /* デフォルトの箇条書きマーク（・）を無効化 */
+        flex-grow: 1; /* リスト部分が縦方向に広がるようにする */
     }
     #view li {
-        /* デフォルトの箇条書きマーク（・）を無効化 */
         list-style: none;
     }
 
@@ -130,8 +135,8 @@
         padding: 10px 15px;
         border-radius: var(--border-radius);
         margin-top: 15px;
-        align-self: flex-start; /* 左寄せ */
-        width: auto;
+        align-self: stretch; /* #viewがflex-direction: column; なので幅いっぱいにする */
+        width: 100%;
     }
     #deleteSelected:hover {
         background-color: #dc2626;
@@ -140,7 +145,7 @@
 </head>
 <body>
     <h1>
-    
+
 Bit英単語テスト  </h1>
     <nav>
         <button id="modeLearn">学習</button>
