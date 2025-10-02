@@ -50,6 +50,12 @@ function renderLearn() {
     <button id="check" class="bg-indigo-500 text-white p-2 rounded shadow hover:bg-indigo-600 transition">答え合わせ</button>
     <p id="result" class="mt-4 font-semibold"></p>
   `;
+  
+  // 新しい問題が表示されたら、回答入力フィールドに自動的にフォーカスを当てる
+  const answerInput = $("#answer");
+  if (answerInput) {
+      answerInput.focus();
+  }
 
   // 答え合わせボタンのイベントハンドラ
   $("#check").onclick = () => {
