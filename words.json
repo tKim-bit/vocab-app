@@ -1,4 +1,6 @@
 [
   { "en": "apple", "ja": "りんご" },
-  { "en": "book",  "ja": "本" }
+  { "en": "book",  "ja": "本" },
+  { "en": "japan",  "ja": "日本" },
+  { "en": "English",  "ja": "英語" }
 ]
