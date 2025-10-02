@@ -41,6 +41,10 @@ function renderLearn() {
     return;
   }
 
+  // --- 修正点: 問題更新の前に、前回表示された内容を確実にクリア ---
+  view.innerHTML = '';
+  // -------------------------------------------------------------
+
   // ランダムな問題を選択
   const q = words[Math.floor(Math.random() * words.length)];
   
