@@ -8,9 +8,9 @@
     <style>
         /* 1. リセットと基本設定 */
         :root {
---primary-color: #4f46e5; /* インディゴ */
+            --primary-color: #4f46e5; /* インディゴ */
             --secondary-color: #6366f1;
-            --bg-color: #f3f4f6; /* 薄いグレーの背景 */
+            --bg-color: #f3ff6; /* 薄いグレーの背景 */
             --card-bg-color: #ffffff;
             --text-color: #1f2937;
             --border-radius: 0.5rem;
@@ -73,18 +73,18 @@
             transform: translateY(1px);
         }
 
-/* 次へボタンの個別スタイル */
-#nextQuestion {
-background-color: #10b981; /* エメラルドグリーン */
-margin-top: 15px;
-flex-grow: 0;
-padding: 12px 20px;
-width: 100%;
-max-width: 600px;
-}
-#nextQuestion:hover {
-background-color: #059669;
-}
+        /* 次へボタンの個別スタイル */
+        #nextQuestion {
+            background-color: #10b981; /* エメラルドグリーン */
+            margin-top: 15px;
+            flex-grow: 0;
+            padding: 12px 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        #nextQuestion:hover {
+            background-color: #059669;
+        }
 
         /* 5. メインビューエリア */
         #view {
@@ -113,11 +113,34 @@ background-color: #059669;
         margin-bottom: 10px; /* 他のコンテンツとの間にスペース */
         align-self: flex-start; /* flexアイテムとして左寄せ */
     }
+
+    /* リスト項目（li）の調整 */
+    #view ul {
+        width: 100%;
+    }
+    #view li {
+        /* デフォルトの箇条書きマーク（・）を無効化 */
+        list-style: none;
+    }
+
+    /* 削除ボタンの調整 */
+    #deleteSelected {
+        background-color: #ef4444; /* 赤 */
+        color: white;
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        margin-top: 15px;
+        align-self: flex-start; /* 左寄せ */
+        width: auto;
+    }
+    #deleteSelected:hover {
+        background-color: #dc2626;
+    }
     </style>
 </head>
 <body>
     <h1>
-
+    
 Bit英単語テスト  </h1>
     <nav>
         <button id="modeLearn">学習</button>

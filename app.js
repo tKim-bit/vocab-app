@@ -52,7 +52,8 @@ function renderLearn() {
   const q = words[Math.floor(Math.random() * words.length)];
   
   view.innerHTML = `
-    <p id="streak" class="text-lg font-bold mb-4 text-indigo-700">連続正解: ${consecutiveCorrects}</p>
+    <!-- 連続正解数表示エリア: 新しいクラス streak-display を適用 -->
+    <p id="streak" class="streak-display">連続正解: ${consecutiveCorrects}</p>
     <h2 class="text-xl font-bold">${q.en}</h2>
     <input id="answer" class="border p-2 rounded w-full" placeholder="答えは？" />
     <button id="check" class="bg-indigo-500 text-white p-2 rounded shadow hover:bg-indigo-600 transition">答え合わせ</button>
@@ -103,9 +104,44 @@ function renderList() {
     return;
   }
 
-  view.innerHTML = "<ul class='list-disc pl-5 space-y-2'>" +
-    words.map(w => `<li class="border-b pb-1 last:border-b-0">${w.en} - ${w.ja}</li>`).join("") +
-    "</ul>";
+  // チェックボックス付きのリストを生成
+  view.innerHTML = `
+    <ul id="wordList" class="space-y-3 list-none p-0">
+    ${words.map((w, index) => `
+        <li class="flex items-center border-b pb-2 last:border-b-0">
+            <input type="checkbox" data-index="${index}" class="word-checkbox mr-3 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" />
+            <span class="text-gray-800">${w.en} - ${w.ja}</span>
+        </li>
+    `).join("")}
+    </ul>
+    <button id="deleteSelected" class="bg-red-500 text-white p-2 rounded shadow hover:bg-red-600 transition mt-4">
+        選択した単語を削除
+    </button>
+  `;
+  
+  // 削除ボタンのイベントハンドラ
+  $("#deleteSelected").onclick = () => {
+    // チェックされた全てのチェックボックスを取得
+    const checkedBoxes = Array.from(document.querySelectorAll('.word-checkbox:checked'));
+    
+    if (checkedBoxes.length === 0) {
+      view.insertAdjacentHTML('beforeend', '<p class="text-gray-500 mt-2">⚠️ 削除する単語を選択してください。</p>');
+      return;
+    }
+    
+    // 削除するインデックスを降順で取得 (降順でないとインデックスがずれてしまうため)
+    const indicesToDelete = checkedBoxes
+        .map(cb => parseInt(cb.dataset.index, 10))
+        .sort((a, b) => b - a); // 降順ソート
+        
+    // 配列から単語を削除
+    indicesToDelete.forEach(index => {
+      words.splice(index, 1);
+    });
+    
+    save(); // localStorageを更新
+    renderList(); // リストを再レンダリングして更新を反映
+  };
 }
 
 /**
@@ -131,16 +167,16 @@ function renderAdd() {
       words.push({ en: enValue, ja: jaValue });
       save(); 
       // alertの代わりにカスタムメッセージを使用
-      view.insertAdjacentHTML('beforeend', '<p class="text-green-600 font-bold">✅ 単語を追加しました！</p>');
-      
-      // 入力フィールドをクリア
-      $("#en").value = '';
-      $("#ja").value = '';
+      view.insertAdjacentHTML('beforeend', '<p class="text-green-600 font-bold">✅ 単語を追加しました！</p>');
+      
+      // 入力フィールドをクリア
+      $("#en").value = '';
+      $("#ja").value = '';
 
-      // しばらくしてからリスト画面へ遷移
-      setTimeout(renderList, 1000);
+      // しばらくしてからリスト画面へ遷移
+      setTimeout(renderList, 1000);
     } else {
-      view.insertAdjacentHTML('beforeend', '<p class="text-red-600 font-bold">⚠️ 英語と日本語の両方を入力してください。</p>');
-    }
+      view.insertAdjacentHTML('beforeend', '<p class="text-red-600 font-bold">⚠️ 英語と日本語の両方を入力してください。</p>');
+    }
   };
 }
