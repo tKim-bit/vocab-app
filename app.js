@@ -4,6 +4,9 @@ const $ = (s) => document.querySelector(s);
 const view = $("#view");
 const nextButton = $("#nextQuestion");
 
+// 連続正解数を保持するグローバル変数
+let consecutiveCorrects = 0; 
+
 // 初回ロード時
 if (words.length === 0) {
   fetch("words.json")
@@ -41,7 +44,7 @@ function renderLearn() {
     return;
   }
 
-  // --- 修正点: 問題更新の前に、前回表示された内容を確実にクリア ---
+  // --- 問題更新の前に、前回表示された内容を確実にクリア ---
   view.innerHTML = '';
   // -------------------------------------------------------------
 
@@ -49,6 +52,7 @@ function renderLearn() {
   const q = words[Math.floor(Math.random() * words.length)];
   
   view.innerHTML = `
+    <p id="streak" class="text-lg font-bold mb-4 text-indigo-700">連続正解: ${consecutiveCorrects}</p>
     <h2 class="text-xl font-bold">${q.en}</h2>
     <input id="answer" class="border p-2 rounded w-full" placeholder="答えは？" />
     <button id="check" class="bg-indigo-500 text-white p-2 rounded shadow hover:bg-indigo-600 transition">答え合わせ</button>
@@ -67,10 +71,19 @@ function renderLearn() {
     const ok = ans === q.ja.toLowerCase();
     const resultElement = $("#result");
     
-    resultElement.innerHTML = ok 
-      ? `<span style="color: green;">✅ 正解</span>` 
-      : `<span style="color: red;">❌ 正解は ${q.ja}</span>`;
-    
+    if (ok) {
+        // ✅ 正解の場合
+        consecutiveCorrects++; // カウントアップ
+        resultElement.innerHTML = `<span style="color: green;">✅ 正解</span>`;
+    } else {
+        // ❌ 不正解の場合
+        consecutiveCorrects = 0; // リセット
+        resultElement.innerHTML = `<span style="color: red;">❌ 正解は ${q.ja}</span>`;
+    }
+
+    // 連続正解数を更新して表示
+    $("#streak").textContent = `連続正解: ${consecutiveCorrects}`;
+
     // 答え合わせ後、次の問題ボタンにフォーカスを移動
     nextButton.focus();
   };
