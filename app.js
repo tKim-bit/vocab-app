@@ -26,6 +26,13 @@ nextButton.onclick = renderLearn;
  * 学習（問題表示）ビューをレンダリングします。
  */
 function renderLearn() {
+  // nextButtonの要素が取得できているか確認（デバッグ用）
+  if (!nextButton) {
+      console.error("次の問題ボタン（#nextQuestion）が見つかりません。");
+      view.innerHTML = "<p>エラー: ボタン要素が見つかりませんでした。</p>" + view.innerHTML;
+      return;
+  }
+  
   // 学習モードが選択されたら「次の問題」ボタンを表示
   nextButton.style.display = 'block';
 
@@ -64,7 +71,9 @@ function renderLearn() {
  */
 function renderList() {
   // 学習モード以外の時は「次の問題」ボタンを非表示
-  nextButton.style.display = 'none';
+  if (nextButton) {
+    nextButton.style.display = 'none';
+  }
 
   if (words.length === 0) {
     view.innerHTML = "<p>単語がありません</p>";
@@ -81,7 +90,9 @@ function renderList() {
  */
 function renderAdd() {
   // 学習モード以外の時は「次の問題」ボタンを非表示
-  nextButton.style.display = 'none';
+  if (nextButton) {
+    nextButton.style.display = 'none';
+  }
 
   view.innerHTML = `
     <input id="en" class="border p-2 rounded w-full" placeholder="英語" />
